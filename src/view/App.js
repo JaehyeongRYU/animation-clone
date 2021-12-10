@@ -58,6 +58,7 @@ function App() {
     const [activeSceneId,setActiveSceneId] = useState('');
 
     const setLayout = () => { //각 스크롤 섹션의 높이 세팅
+        let temp = 0;
         for (let i = 0; i < sceneInfo.length; i++) {
             const copiedSceneInfo = sceneInfo;
             copiedSceneInfo[i].scrollHeight = copiedSceneInfo[i].heightNum * window.innerHeight;
@@ -70,13 +71,13 @@ function App() {
         totalScrollHeight = 0;
         for(let i=0; i<sceneInfo.length; i++){
             totalScrollHeight += sceneInfo[i].scrollHeight;
-
-            if (totalScrollHeight >= yOffset) {
+            if (totalScrollHeight >= window.pageYOffset) {
                 setCurrentScene(i);
+                temp = i;
                 break;
             }
         }
-        setActiveSceneId(`show-scene-${currentScene}`);
+        setActiveSceneId(`show-scene-${temp}`);
     }
 
     const scrollLoop = () => {
@@ -116,6 +117,7 @@ function App() {
 
         scrollLoop();
     }, [yOffset])
+
 
     return (
         <div id="Home">
