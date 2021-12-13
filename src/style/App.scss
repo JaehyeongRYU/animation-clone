@@ -65,6 +65,7 @@
       justify-content: center;
       align-items: center;
       height: 3em;
+      top: 35vh;
       margin:5px 0;
       font-size: 2.5rem;
       @media (min-width: 1024px){
@@ -79,7 +80,6 @@
     .sticky-elem{
       display: none;
       position: fixed;
-      top:0;
       left:0;
       width:100%;
     }
@@ -125,8 +125,10 @@
     }
   }
   #scroll-section-2{
+
     .main-message{
       font-size: 3.5rem;
+      opacity: 0;
       @media (min-width: 1024px){
         font-size: 6vw;
       }
@@ -139,11 +141,31 @@
         font-size: 1.5vw;
       }
     }
-    .desc-message{
-      width:50%;
-      font-weight: bold;
-      @media (min-width: 1024px){
-        width:20%;
+    .sticky-elem {
+      &.desc-message {
+        width: 50%;
+        font-weight: bold;
+
+        &.b {
+          top: 10%;
+          left: 40%;
+        }
+
+        &.c {
+          top: 15%;
+          left: 45%;
+        }
+
+        @media (min-width: 1024px) {
+          width: 20%;
+          &.b {
+            top: 20%;
+            left: 53%;
+          }
+          &.c {
+            left: 55%;
+          }
+        }
       }
     }
     .pin{
