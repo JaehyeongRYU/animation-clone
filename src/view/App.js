@@ -24,6 +24,9 @@ function App() {
 
     const canvasCaption3 = useRef();
 
+    const videoCanvas0 = useRef();
+    const videoCanvas0Context = useRef();
+
     const [yOffset, setYOffset] = useState(0); //window.pageYOffset 대신 쓸 변수
     // const [prevScrollHeight, setPrevScrollHeight] = useState(0); //현재 스크롤 위치(yOffset)보다 이전에 위차한 스크롤 섹션들의 스크롤 높이값의 합
     let prevScrollHeight = 0;
@@ -44,8 +47,13 @@ function App() {
                 messageB: message0B,
                 messageC: message0C,
                 messageD: message0D,
+                canvas: videoCanvas0,
+                context: videoCanvas0Context,
+                videoImages: [],
             },
             values: {//scroll에 따른 비율 조정
+                videoImageCount:300,
+                imageSequence:[0,299],
                 messageA_opacity_in: [0, 1, { start: 0.1, end: 0.2 }],
                 messageB_opacity_in: [0, 1, { start: 0.3, end: 0.4 }],
                 messageC_opacity_in: [0, 1, { start: 0.5, end: 0.6 }],
@@ -61,7 +69,7 @@ function App() {
                 messageA_translateY_out: [0, -20, { start: 0.25, end: 0.3 }],
                 messageB_translateY_out: [0, -20, { start: 0.45, end: 0.5 }],
                 messageC_translateY_out: [0, -20, { start: 0.65, end: 0.7 }],
-                messageD_translateY_out: [0, -20, { start: 0.85, end: 0.9 }]
+                messageD_translateY_out: [0, -20, { start: 0.85, end: 0.9 }],
             }
         },
         {
@@ -125,6 +133,15 @@ function App() {
 
     const [activeSceneId, setActiveSceneId] = useState('');
 
+    const setCanvasImages = () => {
+        let imgElem;
+        for (let i=0; i<sceneInfo[0].values.videoImageCount; i++){
+            imgElem = new Image();
+            imgElem.src = `./assets/video/001/IMG_${6726 + i}.JPG`;
+            sceneInfo[0].objs.videoImages.push(imgElem);
+        }
+    }
+
     const setLayout = () => { //각 스크롤 섹션의 높이 세팅
         let temp = 0;//currentScene 임시 할당 변수
         for (let i = 0; i < sceneInfo.length; i++) {
@@ -137,8 +154,6 @@ function App() {
             else if(sceneInfo[i].type === 'normal') {
                 copiedSceneInfo[i].scrollHeight = 1800;
                 setSceneInfo(copiedSceneInfo);
-                console.log(sceneInfo[i].objs.container.current.style.height);
-
             }
             if (sceneInfo[i].objs.container !== null) {
                 sceneInfo[i].objs.container.current.style.height = `${sceneInfo[i].scrollHeight}px`;
@@ -319,7 +334,15 @@ function App() {
         scrollLoop();
     }, [yOffset])
 
-    console.log("currentScene : ",currentScene);
+    useEffect(()=>{
+        const canvas = videoCanvas0.current;
+        const context = canvas.getContext("2d");
+        videoCanvas0Context.current = context;
+    },[])
+
+    useEffect(()=>{
+        setCanvasImages();
+    },[])
 
     return (
         <div id="Home">
@@ -342,6 +365,9 @@ function App() {
                 </nav>
                 <section className="scroll-section" id="scroll-section-0" ref={scrollSection0}>
                     <h1>AirMug Pro</h1>
+                    <div className="sticky-elem sticky-elem-canvas">
+                        <canvas id="video-canvas-0" ref={videoCanvas0} width="1920" height="1080"></canvas>
+                    </div>
                     <div className="sticky-elem main-message a" ref={message0A}>
                         <p>온전히 빠져들게 하는<br/>최고급 세라믹</p>
                     </div>

@@ -14,6 +14,7 @@
 
   .global-nav{
     position: absolute;
+    z-index: 10;
     top:0;
     left: 0;
     width: 100%;
@@ -31,6 +32,7 @@
   }
   .local-nav{
     position: absolute;
+    z-index: 11;
     top:45px;
     left: 0;
     width: 100%;
@@ -91,7 +93,10 @@
   #show-scene-3 #scroll-section-3 .sticky-elem{
     display: block;
   }
-
+  .sticky-elem-canvas{
+    top:0;
+    background:#ccc;
+  }
   #scroll-section-0{
     h1{
       font-size: 4rem;
